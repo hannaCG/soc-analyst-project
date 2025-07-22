@@ -1,0 +1,19 @@
+# Carpeta de caché de Python
+__pycache__/
+
+# Configuración local de VS Code
+.vscode/
+
+# Archivos compilados de Python
+*.pyc
+
+# Carpeta de reportes o salidas
+ouput/
+
+# Entornos virtuales (tenerlo por si lo creo)
+venv/
+.env
+
+# Archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
