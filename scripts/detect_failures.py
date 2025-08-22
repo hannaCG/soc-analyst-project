@@ -1,6 +1,10 @@
 import re
 from collections import defaultdict, Counter
+import os
 
+# ---------------------------------------------------------
+# Funciones de parseo y análisis
+# ---------------------------------------------------------
 def parse_logs(log_lines):
     """
     Extract IP addresses and authentication status from raw log lines.
@@ -14,6 +18,7 @@ def parse_logs(log_lines):
             ip = match.group(3)
             log_entries.append({"date": date_str, "status": status, "ip": ip})
     return log_entries
+
 
 def detect_consecutive_failures(log_entries, threshold=5):
     """
@@ -47,6 +52,9 @@ def detect_consecutive_failures(log_entries, threshold=5):
     
     return results
 
+# ---------------------------------------------------------
+# Funciones de display
+# ---------------------------------------------------------
 def display_console_report(results):
     """
     Display results in a clean text-based table format.
@@ -87,7 +95,11 @@ def display_summary(log_entries, results, threshold=5):
         
         print("="*50)
 
-def export_html_report(log_entries, results, output_path="output/alerts_report.html", threshold=5):
+
+# ---------------------------------------------------------
+# Función para exportar HTML
+# ---------------------------------------------------------
+def export_html_report(log_entries, results, output_path="docs/alerts_report.html", threshold=5):
     """
     Export results to HTML file with a summary and detailed table.
     """
@@ -158,8 +170,17 @@ def export_html_report(log_entries, results, output_path="output/alerts_report.h
             f.write(html_content)
         
         print(f"[+] HTML report generated at: {output_path}")
-        
 
+# -----------------------------
+# Función para simular alertas por correo
+# -----------------------------
+def simulate_email_alert(ip, threshold=5):
+    print(f"[SIMULATED] Email alert sent to: soc_analyst@example.com for IP {ip} (Threshold: {threshold})")
+
+
+# ---------------------------------------------------------
+# Bloque principal
+# ---------------------------------------------------------
 if __name__ == "__main__":
     # Read your real log file
     log_file_path = "C:/Users/anamc/Documents/3. Ciberseguridad/Proyecto_SOC_Analyst/data/auth_sample.log"
@@ -181,3 +202,8 @@ if __name__ == "__main__":
 
     # Step 5: Export to HTML with summary
     export_html_report(parsed_entries, results)
+
+    # Send alerts for triggered IPs
+    for entry in results:
+        if entry["alert_triggered"]:
+            simulate_email_alert(entry["ip"])
